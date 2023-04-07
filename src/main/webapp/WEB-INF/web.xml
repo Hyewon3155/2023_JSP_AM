@@ -49,4 +49,14 @@
     <servlet-name>qewrqrer</servlet-name>
     <url-pattern>/qewrqrer</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Config</display-name>
+    <servlet-name>Config</servlet-name>
+    <servlet-class>com.koreaIT.java.am.config.Config</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Config</servlet-name>
+    <url-pattern>/Config</url-pattern>
+  </servlet-mapping>
 </web-app>

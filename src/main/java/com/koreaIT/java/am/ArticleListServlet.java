@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.koreaIT.java.am.config.Config;
 import com.koreaIT.java.am.util.DBUtil;
 import com.koreaIT.java.am.util.SecSql;
 
@@ -25,10 +26,9 @@ public class ArticleListServlet extends HttpServlet {
 		Connection conn = null;
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://127.0.0.1:3306/JSPTest?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-
-			conn = DriverManager.getConnection(url, "root", "");
+			Class.forName(Config.getDBDriverName());
+			
+			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassWd());
 			
 			int page = 1;
 			if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
@@ -44,6 +44,16 @@ public class ArticleListServlet extends HttpServlet {
 			int totalCount =  DBUtil.selectRowIntValue(conn, sql);
 			int totalPage = (int) Math.ceil((double) totalCount / itemsInAPage);
 			
+			int pageSize = 5;
+			int from = page - pageSize;
+			if (from < 1) {
+				from = 1;
+			}
+			int end = page + pageSize;
+			if (end > totalPage) {
+				end = totalPage;
+			}
+			
 			sql = SecSql.from("SELECT * FROM article");
 			sql.append("ORDER BY id DESC");
 			sql.append("LIMIT ?, ?", limitFrom, itemsInAPage);
@@ -51,6 +61,8 @@ public class ArticleListServlet extends HttpServlet {
 			List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
 			
 			request.setAttribute("page", page);
+			request.setAttribute("from", from);
+			request.setAttribute("end", end);
 			request.setAttribute("totalPage", totalPage);
 			request.setAttribute("articleListMap", articleListMap);
 			
