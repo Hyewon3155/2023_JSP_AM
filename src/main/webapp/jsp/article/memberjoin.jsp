@@ -4,21 +4,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>게시물 작성</title>
 </head>
 <body>
-	<h1>회원가입</h1>
+	<h1>게시물 작성</h1>
 	
 	<form action="doWrite" method="POST">
 		<div>
-			제목 : <input name="title" type="text" placeholder="제목을 입력해주세요"/>
+		    ID: <input name="title" type="text" placeholder="제목을 입력해주세요"/>
 		</div>
 		<div>
-			내용 : <textarea name="body" placeholder="내용을 입력해주세요"></textarea>
+			PWD: <input name="title" type="text" placeholder="제목을 입력해주세요"/>
 		</div>
 		
 		<div>
-			<button>작성</button>
+			<button>회원가입</button>
 			<a href="list">목록</a>
 		</div>
 	</form>
