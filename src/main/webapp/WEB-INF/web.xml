@@ -69,4 +69,24 @@
     <servlet-name>memberjoin</servlet-name>
     <url-pattern>/memberjoin</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>memberdologin</display-name>
+    <servlet-name>memberdologin</servlet-name>
+    <servlet-class>com.koreaIT.java.am.memberdologin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>memberdologin</servlet-name>
+    <url-pattern>/memberdologin</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>memberlogin</display-name>
+    <servlet-name>memberlogin</servlet-name>
+    <servlet-class>com.koreaIT.java.am.memberlogin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>memberlogin</servlet-name>
+    <url-pattern>/memberlogin</url-pattern>
+  </servlet-mapping>
 </web-app>
