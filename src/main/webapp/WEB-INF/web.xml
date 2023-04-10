@@ -59,4 +59,14 @@
     <servlet-name>Config</servlet-name>
     <url-pattern>/Config</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>memberjoin</display-name>
+    <servlet-name>memberjoin</servlet-name>
+    <servlet-class>com.koreaIT.java.am.memberjoin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>memberjoin</servlet-name>
+    <url-pattern>/memberjoin</url-pattern>
+  </servlet-mapping>
 </web-app>
