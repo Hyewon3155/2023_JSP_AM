@@ -20,7 +20,7 @@ public class MemberDoLogoutServlet extends HttpServlet {
 		session.removeAttribute("loginedMemberId");
 		session.removeAttribute("loginedMemberLoginId");
 		// 로그인했던 회원정보가 없어짐 
-		
+		       
 		response.getWriter().append(String.format("<script>alert('로그아웃되었습니다'); location.replace('../home/main');</script>"));
 	}
 	@Override
@@ -28,3 +28,4 @@ public class MemberDoLogoutServlet extends HttpServlet {
 		doGet(request, response);
 	}                 
 }
+           
