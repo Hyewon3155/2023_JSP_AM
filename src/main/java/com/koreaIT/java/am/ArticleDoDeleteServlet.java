@@ -44,6 +44,8 @@ public class ArticleDoDeleteServlet extends HttpServlet {
 				response.getWriter().append(String.format("<script>alert('%d번 게시물은 존재하지 않습니다'); location.replace('list');</script>", id));
 				return;
 			}
+			// 게시물이 없는데 지우려고 하는 경우를 검사
+			// 가져온 articleRow가 비어있으면 해당 게시물이 존재하지 않는다는 의미
 			
 			HttpSession session = request.getSession();
 			
