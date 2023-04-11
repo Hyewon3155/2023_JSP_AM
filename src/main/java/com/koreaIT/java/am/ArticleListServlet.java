@@ -16,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/list")
 public class ArticleListServlet extends HttpServlet {
@@ -27,7 +28,7 @@ public class ArticleListServlet extends HttpServlet {
 
 		try {
 			Class.forName(Config.getDBDriverName());
-			
+
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassWd());
 			
 			int page = 1;
@@ -55,13 +56,12 @@ public class ArticleListServlet extends HttpServlet {
 			}
 			
 			sql = SecSql.from("SELECT A.*, M.name AS writerName");
-			sql.append("FROM article AS A");
-			sql.append("INNER JOIN `member` as M");
+			sql.append("FROM article A");
+			sql.append("INNER JOIN `member` M");
 			sql.append("ON A.memberId = M.id");
 			sql.append("ORDER BY id DESC");
 			sql.append("LIMIT ?, ?", limitFrom, itemsInAPage);
 			
-			//DB로부터 받아온 정보들을 list에 저장 
 			List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
 			
 			request.setAttribute("page", page);
@@ -69,7 +69,17 @@ public class ArticleListServlet extends HttpServlet {
 			request.setAttribute("end", end);
 			request.setAttribute("totalPage", totalPage);
 			request.setAttribute("articleListMap", articleListMap);
-			//JSP에 날려줌 
+			
+			HttpSession session = request.getSession();
+			
+			int loginedMemberId = -1;
+			
+			if (session.getAttribute("loginedMemberId") != null) {
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+			}
+			
+			request.setAttribute("loginedMemberLoginId", session.getAttribute("loginedMemberLoginId"));
+			request.setAttribute("loginedMemberId", loginedMemberId);
 			
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 			

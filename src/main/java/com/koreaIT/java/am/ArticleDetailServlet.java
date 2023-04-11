@@ -30,17 +30,6 @@ public class ArticleDetailServlet extends HttpServlet {
 
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassWd());
 			
-			HttpSession session = request.getSession();
-			
-			int loginedMemberId = -1;
-			
-			if(session.getAttribute("loginedMemberId") != null) {
-				// null인 경우, 값이 안 들어있음, 로그인을 하지 않음 
-				loginedMemberId = (int)session.getAttribute("loginedMemberId");
-				//session의 타입은 Object, 즉, 형 변환을 해주어야 함 
-			}
-			request.setAttribute("loginedMemberId", loginedMemberId);
-			
 			int id = Integer.parseInt(request.getParameter("id"));
 			
 			SecSql sql = SecSql.from("SELECT A.*, M.name AS writerName");
@@ -52,6 +41,16 @@ public class ArticleDetailServlet extends HttpServlet {
 			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 			
 			request.setAttribute("articleRow", articleRow);
+			
+			HttpSession session = request.getSession();
+			
+			int loginedMemberId = -1;
+			
+			if (session.getAttribute("loginedMemberId") != null) {
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+			}
+			
+			request.setAttribute("loginedMemberId", loginedMemberId);
 			
 			request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
 			
