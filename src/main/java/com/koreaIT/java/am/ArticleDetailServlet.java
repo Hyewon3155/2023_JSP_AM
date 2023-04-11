@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/detail")
 public class ArticleDetailServlet extends HttpServlet {
@@ -26,13 +27,27 @@ public class ArticleDetailServlet extends HttpServlet {
 
 		try {
 			Class.forName(Config.getDBDriverName());
-			
+
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassWd());
+			
+			HttpSession session = request.getSession();
+			
+			int loginedMemberId = -1;
+			
+			if(session.getAttribute("loginedMemberId") != null) {
+				// null인 경우, 값이 안 들어있음, 로그인을 하지 않음 
+				loginedMemberId = (int)session.getAttribute("loginedMemberId");
+				//session의 타입은 Object, 즉, 형 변환을 해주어야 함 
+			}
+			request.setAttribute("loginedMemberId", loginedMemberId);
 			
 			int id = Integer.parseInt(request.getParameter("id"));
 			
-			SecSql sql = SecSql.from("SELECT * FROM article");
-			sql.append("WHERE id = ?", id);
+			SecSql sql = SecSql.from("SELECT A.*, M.name AS writerName");
+			sql.append("FROM article A");
+			sql.append("INNER JOIN `member` M");
+			sql.append("ON A.memberId = M.id");
+			sql.append("WHERE A.id = ?", id);
 			
 			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 			

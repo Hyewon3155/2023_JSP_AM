@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/doWrite")
 public class ArticleDoWriteServlet extends HttpServlet {
@@ -27,15 +28,19 @@ public class ArticleDoWriteServlet extends HttpServlet {
 
 		try {
 			Class.forName(Config.getDBDriverName());
-			
+
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassWd());
 			
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");
 			
+			HttpSession session = request.getSession();
+			int loginedMemberId = (int) session.getAttribute("loginedMemberId");
+			
 			SecSql sql = SecSql.from("INSERT INTO article");
 			sql.append("SET regDate = NOW()");
 			sql.append(", updateDate = NOW()");
+			sql.append(", memberId = ?", loginedMemberId);
 			sql.append(", title = ?", title);
 			sql.append(", `body` = ?", body);
 			

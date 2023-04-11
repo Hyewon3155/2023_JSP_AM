@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>게시물 작성</title>
 </head>
 <body>
-	<h1>회원가입</h1>
+	<h1>게시물 작성</h1>
 	
 	<form action="doWrite" method="POST">
 		<div>

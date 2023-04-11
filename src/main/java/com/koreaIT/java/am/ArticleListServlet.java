@@ -54,10 +54,14 @@ public class ArticleListServlet extends HttpServlet {
 				end = totalPage;
 			}
 			
-			sql = SecSql.from("SELECT * FROM article");
+			sql = SecSql.from("SELECT A.*, M.name AS writerName");
+			sql.append("FROM article AS A");
+			sql.append("INNER JOIN `member` as M");
+			sql.append("ON A.memberId = M.id");
 			sql.append("ORDER BY id DESC");
 			sql.append("LIMIT ?, ?", limitFrom, itemsInAPage);
 			
+			//DB로부터 받아온 정보들을 list에 저장 
 			List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
 			
 			request.setAttribute("page", page);
@@ -65,6 +69,7 @@ public class ArticleListServlet extends HttpServlet {
 			request.setAttribute("end", end);
 			request.setAttribute("totalPage", totalPage);
 			request.setAttribute("articleListMap", articleListMap);
+			//JSP에 날려줌 
 			
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 			
